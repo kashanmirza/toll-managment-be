@@ -1,4 +1,4 @@
-exports.checkHoliday = (param) => {
+exports.checkHolidays = (param) => {
   const currentYear = new Date().getFullYear();
   var holidayOne = new Date("23/03/" + currentYear);
   var holidayTwo = new Date("14/08/" + currentYear);
