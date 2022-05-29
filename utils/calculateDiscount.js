@@ -1,1 +1,2 @@
-exports.calculateDiscount = (bill, discount) => bill - (bill * discount) / 100;
+exports.calculateDiscount = (bill, discount) =>
+  Math.round(bill - (bill * discount) / 100);

@@ -39,14 +39,18 @@ exports.exit = async function (req, res) {
       let discountInPercent = 0;
       let subTotal = 0;
       const interChanges = compareArrays(entryPoints, result, "interChange");
+      
+      const breakDownCost = interChanges.map((item) => ({
+        ...item,
+        cost: checkWeekend(dateAndTime)
+          ? Math.round(item.km * weekendRate)
+          : Math.round(item.km * distanceRate),
+      }));
 
-      const totalKilometers = interChanges.reduce(
-        (total, item) => total + item.km,
+      const costPerKilometer = breakDownCost.reduce(
+        (total, item) => total + item.cost,
         0
       );
-      const costPerKilometer = checkWeekend(dateAndTime)
-        ? totalKilometers * weekendRate
-        : totalKilometers * distanceRate;
 
       subTotal = baseCharges + costPerKilometer;
 
@@ -54,27 +58,22 @@ exports.exit = async function (req, res) {
         checkMondayandWednesday(dateAndTime) &&
         checkNumberIsEvenOrOdd(+plateNumber)
       ) {
-        console.log("checkMondayandWednesday");
         discountInPercent = discountInPercent + evenDiscount;
       }
       if (
         checkTuesdayAndThursday(dateAndTime) &&
         !checkNumberIsEvenOrOdd(+plateNumber)
       ) {
-        console.log("checkTuesdayAndThursday");
-
         discountInPercent = discountInPercent + oddDiscount;
       }
       if (checkHolidays(dateAndTime)) {
-        console.log("checkHolidays");
-
         discountInPercent = discountInPercent + holidayDiscount;
       }
 
       const discountedCharges = calculateDiscount(subTotal, discountInPercent);
 
       response.baseRate = baseCharges;
-      response.distanceCostBreakDown = interChanges;
+      response.distanceCostBreakDown = breakDownCost;
       response.subTotal = baseCharges + costPerKilometer;
       response.discount = discountInPercent;
       response.totalCharges = discountedCharges;
