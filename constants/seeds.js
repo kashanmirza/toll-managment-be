@@ -1,11 +1,11 @@
 exports.entryPoints = [
-  { ZeroPoint: 0 },
-  { NSInterchange: 5 },
-  { Ph4Interchange: 10 },
-  { FerozpurInterchange: 17 },
-  { LakeCityInterchange: 24 },
-  { RaiwandInterchange: 29 },
-  { BahriaInterchange: 34 },
+  { interChange: "ZeroPoint", km: 0 },
+  { interChange: "NSInterchange", km: 5 },
+  { interChange: "Ph4Interchange", km: 10 },
+  { interChange: "FerozpurInterchange", km: 17 },
+  { interChange: "LakeCityInterchange", km: 24 },
+  { interChange: "RaiwandInterchange", km: 29 },
+  { interChange: "BahriaInterchange", km: 34 },
 ];
 
 exports.baseCharges = 20;

@@ -1,20 +1,24 @@
-let count = 0;
+const { isNumberPlateValid } = require("../utils/isNumberPlateValid");
 
-const db = [];
+const toll = require("../Models/tollSchema");
+
 exports.entry = async function (req, res) {
-  const { interChange, numberPlate, dateTime } = req.body;
+  const { body } = req;
 
-  const tuple = {
-    id: count++,
-    interChange,
-    numberPlate,
-    dateTime,
-    numberPlate,
-    charges: 20,
-  };
-  db.push(tuple);
-  res.send({
-    status: 200,
-    message: "Successfully submitted",
+  if (!isNumberPlateValid(body.numberPlate)) {
+    res.send({
+      status: 422,
+      message: "Number plate is not valid",
+    });
+  }
+
+  toll.create(body, function (error, result) {
+    if (error) throw error;
+    else {
+      res.send({
+        status: 200,
+        message: "Data saved",
+      });
+    }
   });
 };
