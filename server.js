@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+const cors = require('cors')
 var app = express();
 var session = require('express-session');
 var port = process.env.PORT || 9000;
@@ -8,7 +9,10 @@ var server = http.Server(app);
 var bodyParser = require("body-parser");
 var mongoStore = require("connect-mongo")(session);
 
+
 require("dotenv").config();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(

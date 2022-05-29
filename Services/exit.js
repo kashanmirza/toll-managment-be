@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const toll = require("../Models/tollSchema");
 
 const { isNumberPlateValid } = require("../utils/isNumberPlateValid");
@@ -21,15 +23,24 @@ const {
 
 exports.exit = async function (req, res) {
   const { query } = req;
+  console.log(query)
   const { numberPlate, dateAndTime, interChange } = query;
   const criteria = { numberPlate, dateAndTime };
   const response = {};
 
+  if (_.isEmpty(query)) {
+    res.send({
+      status: 404,
+      message: "Please provide data",
+    });
+    return;
+  }
   if (!isNumberPlateValid(query.numberPlate)) {
     res.send({
       status: 422,
       message: "Number plate is not valid",
     });
+    return
   }
   const plateNumber = numberPlate.split("-")[1];
 
@@ -80,6 +91,7 @@ exports.exit = async function (req, res) {
 
       res.send({
         status: 200,
+        message: "successfully fetched",
         data: response,
       });
     }
